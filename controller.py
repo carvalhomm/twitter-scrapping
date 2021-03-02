@@ -1,1 +1,1 @@
-from './core.py' import create_webdriver
+import core
