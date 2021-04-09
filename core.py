@@ -7,8 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-from  bs4 import BeautifulSoup
 import time
+from  bs4 import BeautifulSoup
 
 class WebDriverCore:
   def __init__(self, browser_name, headless):
@@ -45,6 +45,16 @@ class WebDriverCore:
     if self.wait is None or value is None:
       return None
     self.wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, value)))
+
+  def scroll_page(self):
+    if self.driver is None:
+      return
+    self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+  def wait_element_presence(self, value = None):
+    if self.driver is None or value is None:
+      return
+    self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, value)))
 
   def wait_element_visible(self, value = None):
     if self.wait is None or value is None:
