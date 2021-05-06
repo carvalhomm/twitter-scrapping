@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 import controller
 
 class UserInterface:
-  def __init__():
+  def __init__(self):
     self.window = None
     self.layout = None
     self.controller = None
@@ -12,11 +12,11 @@ class UserInterface:
       [sg.Text('Twitter Scrapping', justification='center', size=(40, 1))],
       [
         sg.Checkbox('Deseja ver a interação com o browser no site do Twitter?', default=False, key='BROWSER_HEADLESS')
-      ]
+      ],
       [
         sg.Text('Limite de Resultados (O limite é 30)', size=(40, 1)),
         sg.Multiline(size=(70, 5), enter_submits=False, key='QUANTIDADE', do_not_clear=False)
-      ]
+      ],
       [sg.Text('Pesquisa por Trend Topics', size=(40, 1))],
       [
         sg.Multiline(size=(70, 5), enter_submits=False, key='TREND_TOPICS', do_not_clear=False),
@@ -35,6 +35,7 @@ class UserInterface:
     ]
 
   def draw_window(self, title = 'Twitter Scrapping'):
+    sg.theme('reddit')
     self.window = sg.Window(title, layout=self.layout, default_button_element_size=(8,2), use_default_focus=False)
 
   def instance_browser(self, headless = False):
@@ -49,7 +50,7 @@ class UserInterface:
       event, values = self.window.read()
       print('evento --> ', event)
       print('texto --> ', values)
-      if event in (sg.WIN_CLOSED, 'EXIT'):
+      if event == sg.WIN_CLOSED:
         user_interacting = False
         continue
       quantidade = int(values['QUANTIDADE'].rstrip())
