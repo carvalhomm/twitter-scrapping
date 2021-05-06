@@ -15,21 +15,21 @@ class UserInterface:
       ],
       [
         sg.Text('Limite de Resultados (O limite é 30)', size=(40, 1)),
-        sg.Multiline(size=(70, 5), enter_submits=False, key='QUANTIDADE', do_not_clear=False)
+        sg.Multiline(size=(5, 1), enter_submits=False, key='QUANTIDADE', do_not_clear=False)
       ],
       [sg.Text('Pesquisa por Trend Topics', size=(40, 1))],
       [
-        sg.Multiline(size=(70, 5), enter_submits=False, key='TREND_TOPICS', do_not_clear=False),
+        sg.Multiline(size=(10, 1), enter_submits=False, key='TREND_TOPICS', do_not_clear=False),
         sg.Button('Pesquisar por Trend Topics', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
       ],
       [sg.Text('Pesquisa por Hashtag (Pode ser mais de uma, separados por um espaço simples)', size=(40, 1))],
       [
-        sg.Multiline(size=(70, 5), enter_submits=False, key='HASHTAGS', do_not_clear=False),
+        sg.Multiline(size=(10, 1), enter_submits=False, key='HASHTAGS', do_not_clear=False),
         sg.Button('Pesquisar por Hashtags', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
       ],
       [sg.Text('Pesquisa por Palavras Chave', size=(40, 1))],
       [
-        sg.Multiline(size=(70, 5), enter_submits=False, key='PALAVRAS_CHAVE', do_not_clear=False),
+        sg.Multiline(size=(10, 1), enter_submits=False, key='PALAVRAS_CHAVE', do_not_clear=False),
         sg.Button('Pesquisar por Palavras Chave', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
       ]
     ]
