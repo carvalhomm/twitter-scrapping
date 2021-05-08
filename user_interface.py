@@ -23,7 +23,7 @@ class UserInterface:
         sg.Multiline(size=(10, 1), enter_submits=False, key='TREND_TOPICS', do_not_clear=False),
         sg.Button('Pesquisar por Trend Topics', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
       ],
-      [sg.Text('Pesquisa por Hashtag (Pode ser mais de uma, separados por um espaço simples)', size=(40, 1))],
+      [sg.Text('Pesquisa por Hashtag (Inclua o "#" na frente)', size=(40, 1))],
       [
         sg.Multiline(size=(10, 1), enter_submits=False, key='HASHTAGS', do_not_clear=False),
         sg.Button('Pesquisar por Hashtags', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
@@ -75,9 +75,12 @@ class UserInterface:
           print('valor de trending_topics não aceito')
       if event == 'Pesquisar por Hashtags':
         hashtags = str(values['HASHTAGS'].rstrip()).trim()
-        self.search_hashtags(hashtags, quantidade)
+        if '#' in hashtags:
+          self.search_hashtags(hashtags, quantidade)
+        else:
+          print('Pesquisa por hashtag está sem #')
       if event == 'Pesquisar por Palavras Chave':
         palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip()).trim()
-        self.search_keywords(palavrasChave, quantidade)
+        self.search_keywords('"' + palavrasChave + '"', quantidade)
 
     self.window.close()
