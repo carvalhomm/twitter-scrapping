@@ -16,28 +16,31 @@ class UserInterface:
       ],
       [
         sg.Text('Limite de Resultados (O limite é 30)', size=(40, 1)),
-        sg.Multiline(size=(5, 1), enter_submits=False, key='QUANTIDADE', do_not_clear=False)
+        sg.Input(size=(10, 1), key='QUANTIDADE')
       ],
       [sg.Text('Pesquisa por Trend Topics (valores aceitos: for-you | covid-19 | trending | news_unified | sports_unified | entertainment_unified)', size=(40, 1))],
       [
-        sg.Multiline(size=(10, 1), enter_submits=False, key='TREND_TOPICS', do_not_clear=False),
-        sg.Button('Pesquisar por Trend Topics', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
+        sg.Input(size=(10, 1), key='TREND_TOPICS'),
+        sg.Button('Pesquisar por Trend Topics'),
       ],
       [sg.Text('Pesquisa por Hashtag (Inclua o "#" na frente)', size=(40, 1))],
       [
-        sg.Multiline(size=(10, 1), enter_submits=False, key='HASHTAGS', do_not_clear=False),
-        sg.Button('Pesquisar por Hashtags', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
+        sg.Input(size=(10, 1), key='HASHTAGS'),
+        sg.Button('Pesquisar por Hashtags'),
       ],
       [sg.Text('Pesquisa por Palavras Chave', size=(40, 1))],
       [
-        sg.Multiline(size=(10, 1), enter_submits=False, key='PALAVRAS_CHAVE', do_not_clear=False),
-        sg.Button('Pesquisar por Palavras Chave', button_color=(sg.YELLOWS[0], sg.BLUES[0])),
+        sg.Input(size=(10, 1), key='PALAVRAS_CHAVE'),
+        sg.Button('Pesquisar por Palavras Chave'),
+      ],
+      [
+        sg.Multiline(size=(40, 10), key="RESULT")
       ]
     ]
 
   def draw_window(self, title = 'Twitter Scrapping'):
-    sg.theme('reddit')
-    self.window = sg.Window(title, layout=self.layout, default_button_element_size=(8,2), use_default_focus=False)
+    sg.theme('TanBlue')
+    self.window = sg.Window(title, layout=self.layout)
 
   def instance_browser(self, headless = False):
     self.controller = controller.Controller('chrome', headless)
@@ -63,24 +66,31 @@ class UserInterface:
       if event == sg.WIN_CLOSED:
         user_interacting = False
         continue
-      quantidade = int(values['QUANTIDADE'].rstrip())
+      quantidade = values['QUANTIDADE'].rstrip()
+      if quantidade != None and quantidade != '':
+        quantidade = int(quantidade)
       browser_headless = bool(values['BROWSER_HEADLESS'])
       self.instance_browser(browser_headless)
       self.interact_with_browser()
-      if event == 'Pesquisa por Trend Topics':
-        trends = str(values['TREND_TOPICS'].rstrip()).trim()
-        if trends in trending_topics_accepted:
+      if event == 'Pesquisar por Trend Topics':
+        trends = str(values['TREND_TOPICS'].rstrip())
+        if trends in self.trending_topics_accepted:
           self.search_trend_topics(trends, quantidade)
+          self.window['RESULT'].update('Pesquisa por trending_topics')
         else:
           print('valor de trending_topics não aceito')
+          self.window['RESULT'].update('valor de trending_topics não aceito')
       if event == 'Pesquisar por Hashtags':
-        hashtags = str(values['HASHTAGS'].rstrip()).trim()
+        hashtags = str(values['HASHTAGS'].rstrip())
         if '#' in hashtags:
           self.search_hashtags(hashtags, quantidade)
+          self.window['RESULT'].update('Pesquisa por hashtag')
         else:
           print('Pesquisa por hashtag está sem #')
+          self.window['RESULT'].update('Pesquisa por hashtag está sem #')
       if event == 'Pesquisar por Palavras Chave':
-        palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip()).trim()
+        palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip())
         self.search_keywords('"' + palavrasChave + '"', quantidade)
+        self.window['RESULT'].update('Pesquisa por palavras chave')
 
     self.window.close()
