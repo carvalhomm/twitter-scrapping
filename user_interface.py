@@ -49,13 +49,16 @@ class UserInterface:
     self.controller.open_url('https://twitter.com/explore')
 
   def search_trend_topics(self, trends, quantidade):
-    self.controller.open_url()
+    self.controller.click_on_trend_topics(trends)
+    self.controller.get_results()
   
   def search_hashtags(self, hashtags, quantidade):
-    self.controller.open_url()
+    self.controller.search_for(hashtags)
+    self.controller.get_results()
 
   def search_keywords(self, keywords, quantidade):
-    self.controller
+    self.controller.search_for(keywords)
+    self.controller.get_results()
 
   def wait_for_user_interactions(self):
     user_interacting = True
