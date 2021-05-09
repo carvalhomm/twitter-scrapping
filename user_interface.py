@@ -39,7 +39,7 @@ class UserInterface:
     ]
 
   def draw_window(self, title = 'Twitter Scrapping'):
-    sg.theme('TanBlue')
+    sg.change_look_and_feel('TanBlue')
     self.window = sg.Window(title, layout=self.layout)
 
   def instance_browser(self, headless = False):
@@ -67,8 +67,10 @@ class UserInterface:
         user_interacting = False
         continue
       quantidade = values['QUANTIDADE'].rstrip()
-      if quantidade != None and quantidade != '':
+      try:
         quantidade = int(quantidade)
+      except:
+        quantidade = 30
       browser_headless = bool(values['BROWSER_HEADLESS'])
       self.instance_browser(browser_headless)
       self.interact_with_browser()
