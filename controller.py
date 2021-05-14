@@ -6,12 +6,10 @@ class Controller:
 
   def open_url(self, url = ''):
     self.browser.open_url(url)
-    print('url open')
-    self.browser.wait_element_presence('//div[@role="tablist"]')
-    # self.browser.wait_element_visible('//div[@role="tablist"]')
+    self.browser.wait_element_visible('div[role="presentation"]')
 
   def click_on_trend_topics(self, trend):
-    element = self.browser.find_element_by('XPATH', '//a[@href="/explore/tabs/'+url+'"]')
+    element = self.browser.find_element_by('XPATH', '//a[@href="/explore/tabs/'+trend+'"]')
     self.browser.click_on_element(element)
 
   def search_for(self, text):
@@ -20,11 +18,16 @@ class Controller:
     self.browser.press_key(element, 'ENTER')
 
   def get_results(self):
-    print('getting results')
-    self.browser.wait_element_presence('//div[@aria-label="Timeline: Buscar timeline"]')
-    # self.browser.wait_element_visible('//div[@aria-label="Timeline: Buscar timeline"]')
+    self.browser.wait_element_visible('section[role="region"]')
     html = self.browser.beautify_html()
-    timeline = html.find('//div[@aria-label="Timeline: Buscar timeline"]')
-    posts = timeline.find_all('article')
-    print('posts --> ', posts)
+    timeline = html.find('section', {'role':'region'})
+    posts = timeline.find_all('span')
+    resultados = []
+    for post in posts:
+      text = post.getText()
+      if len(text) <= 3:
+        continue
+      resultados.append(text)
+    return resultados
+
     

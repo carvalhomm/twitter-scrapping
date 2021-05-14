@@ -14,10 +14,6 @@ class UserInterface:
       [
         sg.Checkbox('Deseja ver a interação com o browser no site do Twitter?', default=False, key='BROWSER_HEADLESS')
       ],
-      [
-        sg.Text('Limite de Resultados (O limite é 30)', size=(40, 1)),
-        sg.Input(size=(10, 1), key='QUANTIDADE')
-      ],
       [sg.Text('Pesquisa por Trend Topics (valores aceitos: for-you | covid-19 | trending | news_unified | sports_unified | entertainment_unified)', size=(40, 1))],
       [
         sg.Input(size=(10, 1), key='TREND_TOPICS'),
@@ -48,15 +44,15 @@ class UserInterface:
   def interact_with_browser(self):
     self.controller.open_url('https://twitter.com/explore')
 
-  def search_trend_topics(self, trends, quantidade):
+  def search_trend_topics(self, trends):
     self.controller.click_on_trend_topics(trends)
     self.controller.get_results()
   
-  def search_hashtags(self, hashtags, quantidade):
+  def search_hashtags(self, hashtags):
     self.controller.search_for(hashtags)
     self.controller.get_results()
 
-  def search_keywords(self, keywords, quantidade):
+  def search_keywords(self, keywords):
     self.controller.search_for(keywords)
     self.controller.get_results()
 
@@ -69,18 +65,13 @@ class UserInterface:
       if event == sg.WIN_CLOSED:
         user_interacting = False
         continue
-      quantidade = values['QUANTIDADE'].rstrip()
-      try:
-        quantidade = int(quantidade)
-      except:
-        quantidade = 30
       browser_headless = bool(values['BROWSER_HEADLESS'])
-      self.instance_browser(browser_headless)
+      self.instance_browser(not browser_headless)
       self.interact_with_browser()
       if event == 'Pesquisar por Trend Topics':
         trends = str(values['TREND_TOPICS'].rstrip())
         if trends in self.trending_topics_accepted:
-          self.search_trend_topics(trends, quantidade)
+          self.search_trend_topics(trends)
           self.window['RESULT'].update('Pesquisa por trending_topics')
         else:
           print('valor de trending_topics não aceito')
@@ -88,14 +79,14 @@ class UserInterface:
       if event == 'Pesquisar por Hashtags':
         hashtags = str(values['HASHTAGS'].rstrip())
         if '#' in hashtags:
-          self.search_hashtags(hashtags, quantidade)
+          self.search_hashtags(hashtags)
           self.window['RESULT'].update('Pesquisa por hashtag')
         else:
           print('Pesquisa por hashtag está sem #')
           self.window['RESULT'].update('Pesquisa por hashtag está sem #')
       if event == 'Pesquisar por Palavras Chave':
         palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip())
-        self.search_keywords('"' + palavrasChave + '"', quantidade)
+        self.search_keywords('"' + palavrasChave + '"')
         self.window['RESULT'].update('Pesquisa por palavras chave')
 
     self.window.close()

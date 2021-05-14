@@ -29,8 +29,8 @@ class WebDriverCore:
       elif browser_name == 'edge':
         return webdriver.Edge(executable_path=GeckoDriverManager().install())
       return None
-    except error:
-      print(error)
+    except:
+      print('error instancing driver')
       return None
 
   def sleep_driver(self, seconds = 5):
