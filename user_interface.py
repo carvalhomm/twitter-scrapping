@@ -6,7 +6,7 @@ class UserInterface:
     self.window = None
     self.layout = None
     self.controller = None
-    self.trending_topics_accepted = ['for-you', 'covid-19', 'trending', 'news_unified', 'sports_unified', 'entertainment_unified']
+    self.trending_topics_accepted = ['for-you', 'covid-19', 'trending']
 
   def generate_layout(self):
     self.layout = [
@@ -14,19 +14,24 @@ class UserInterface:
       [
         sg.Checkbox('Deseja ver a interação com o browser no site do Twitter?', default=False, key='BROWSER_HEADLESS')
       ],
-      [sg.Text('Pesquisa por Trend Topics (valores aceitos: for-you | covid-19 | trending | news_unified | sports_unified | entertainment_unified)', size=(40, 1))],
       [
-        sg.Input(size=(10, 1), key='TREND_TOPICS'),
+        sg.Text('Pesquisa por Trend Topics', size=(40, 1))
+      ],
+      [
+        sg.Text('(valores aceitos: for-you | covid-19 | trending)', size=(40, 1))
+      ],
+      [
+        sg.Input(size=(40, 1), key='TREND_TOPICS'),
         sg.Button('Pesquisar por Trend Topics'),
       ],
       [sg.Text('Pesquisa por Hashtag (Inclua o "#" na frente)', size=(40, 1))],
       [
-        sg.Input(size=(10, 1), key='HASHTAGS'),
+        sg.Input(size=(40, 1), key='HASHTAGS'),
         sg.Button('Pesquisar por Hashtags'),
       ],
       [sg.Text('Pesquisa por Palavras Chave', size=(40, 1))],
       [
-        sg.Input(size=(10, 1), key='PALAVRAS_CHAVE'),
+        sg.Input(size=(40, 1), key='PALAVRAS_CHAVE'),
         sg.Button('Pesquisar por Palavras Chave'),
       ],
       [
@@ -46,15 +51,15 @@ class UserInterface:
 
   def search_trend_topics(self, trends):
     self.controller.click_on_trend_topics(trends)
-    self.controller.get_results()
+    return self.controller.get_results()
   
   def search_hashtags(self, hashtags):
     self.controller.search_for(hashtags)
-    self.controller.get_results()
+    return self.controller.get_results()
 
   def search_keywords(self, keywords):
     self.controller.search_for(keywords)
-    self.controller.get_results()
+    return self.controller.get_results()
 
   def wait_for_user_interactions(self):
     user_interacting = True
@@ -66,27 +71,28 @@ class UserInterface:
         user_interacting = False
         continue
       browser_headless = bool(values['BROWSER_HEADLESS'])
-      self.instance_browser(not browser_headless)
-      self.interact_with_browser()
+      if self.controller is None:
+        self.instance_browser(not browser_headless)
+        self.interact_with_browser()
       if event == 'Pesquisar por Trend Topics':
         trends = str(values['TREND_TOPICS'].rstrip())
         if trends in self.trending_topics_accepted:
-          self.search_trend_topics(trends)
-          self.window['RESULT'].update('Pesquisa por trending_topics')
+          resultado = self.search_trend_topics(trends)
+          self.window['RESULT'].update(resultado)
         else:
           print('valor de trending_topics não aceito')
           self.window['RESULT'].update('valor de trending_topics não aceito')
       if event == 'Pesquisar por Hashtags':
         hashtags = str(values['HASHTAGS'].rstrip())
         if '#' in hashtags:
-          self.search_hashtags(hashtags)
-          self.window['RESULT'].update('Pesquisa por hashtag')
+          resultado = self.search_hashtags(hashtags)
+          self.window['RESULT'].update(resultado)
         else:
           print('Pesquisa por hashtag está sem #')
           self.window['RESULT'].update('Pesquisa por hashtag está sem #')
       if event == 'Pesquisar por Palavras Chave':
         palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip())
-        self.search_keywords('"' + palavrasChave + '"')
-        self.window['RESULT'].update('Pesquisa por palavras chave')
+        resultado = self.search_keywords('"' + palavrasChave + '"')
+        self.window['RESULT'].update(resultado)
 
     self.window.close()
