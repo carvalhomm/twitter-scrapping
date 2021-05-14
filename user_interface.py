@@ -46,7 +46,7 @@ class UserInterface:
   def instance_browser(self, headless = False):
     self.controller = controller.Controller('chrome', headless)
 
-  def interact_with_browser(self):
+  def open_twitter(self):
     self.controller.open_url('https://twitter.com/explore')
 
   def search_trend_topics(self, trends):
@@ -73,7 +73,7 @@ class UserInterface:
       browser_headless = bool(values['BROWSER_HEADLESS'])
       if self.controller is None:
         self.instance_browser(not browser_headless)
-        self.interact_with_browser()
+        self.open_twitter()
       if event == 'Pesquisar por Trend Topics':
         trends = str(values['TREND_TOPICS'].rstrip())
         if trends in self.trending_topics_accepted:

@@ -3,6 +3,7 @@ import core as WebBrowserCore
 class Controller:
   def __init__(self, browser_name, headless):
     self.browser = WebBrowserCore.WebDriverCore(browser_name, headless)
+    self.browser.driver.set_window_size(900, 745)
 
   def open_url(self, url = ''):
     self.browser.open_url(url)
@@ -26,6 +27,8 @@ class Controller:
     for post in posts:
       text = post.getText()
       if len(text) <= 3:
+        continue
+      if 'Assunto' in text:
         continue
       resultados.append(text)
     return resultados
