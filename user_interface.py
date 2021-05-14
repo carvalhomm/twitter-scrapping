@@ -94,5 +94,7 @@ class UserInterface:
         palavrasChave = str(values['PALAVRAS_CHAVE'].rstrip())
         resultado = self.search_keywords('"' + palavrasChave + '"')
         self.window['RESULT'].update(resultado)
+      self.controller.close_browser()
+      self.controller = None
 
     self.window.close()

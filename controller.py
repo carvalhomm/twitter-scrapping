@@ -25,7 +25,7 @@ class Controller:
     posts = timeline.find_all('span')
     resultado = ''
     for post in posts:
-      text = post.getText()
+      text = post.getText().strip()
       if len(text) <= 3:
         continue
       if 'Assunto' in text:
@@ -33,6 +33,10 @@ class Controller:
       if 'Tweets' in text:
         continue
       if 'Seguir' in text:
+        continue
+      if 'Mostrar esta sequência' in text:
+        continue
+      if 'Tópico relacionado':
         continue
       resultado = resultado + text + '\n'
     return resultado

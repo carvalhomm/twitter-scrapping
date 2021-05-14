@@ -7,8 +7,8 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
-import time
 from bs4 import BeautifulSoup
+import time
 
 class WebDriverCore:
   def __init__(self, browser_name, headless):
