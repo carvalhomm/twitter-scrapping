@@ -101,4 +101,6 @@ class WebDriverCore:
   def close_browser(self):
     if self.driver is not None:
       self.driver.close()
+      self.driver = None
+      self.wait = None
     return True

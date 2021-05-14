@@ -23,14 +23,22 @@ class Controller:
     html = self.browser.beautify_html()
     timeline = html.find('section', {'role':'region'})
     posts = timeline.find_all('span')
-    resultados = []
+    resultado = ''
     for post in posts:
       text = post.getText()
       if len(text) <= 3:
         continue
       if 'Assunto' in text:
         continue
-      resultados.append(text)
-    return resultados
+      if 'Tweets' in text:
+        continue
+      if 'Seguir' in text:
+        continue
+      resultado = resultado + text + '\n'
+    return resultado
+  
+  def close_browser(self):
+    self.browser.close_browser()
+    self.browser = None
 
     

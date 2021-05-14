@@ -81,7 +81,7 @@ class UserInterface:
           self.window['RESULT'].update(resultado)
         else:
           print('valor de trending_topics não aceito')
-          self.window['RESULT'].update('valor de trending_topics não aceito')
+          self.window['RESULT'].update('valor de trending topics não aceito')
       if event == 'Pesquisar por Hashtags':
         hashtags = str(values['HASHTAGS'].rstrip())
         if '#' in hashtags:
