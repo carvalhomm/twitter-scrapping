@@ -27,7 +27,7 @@ class WebDriverCore:
       elif browser_name == 'firefox':
         return webdriver.Firefox(executable_path=GeckoDriverManager().install())
       elif browser_name == 'edge':
-        return webdriver.Edge(executable_path=GeckoDriverManager().install())
+        return webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
       return None
     except:
       print('error instancing driver')
